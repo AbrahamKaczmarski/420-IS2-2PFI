@@ -1,2 +1,3 @@
-# 420-IS2-2PFI
-Programowanie we Frameworkach Internetowych
+# Programowanie we Frameworkach Internetowych
+
+Abraham Kaczmarski, Łukasz Karwowski, Marek Korzeniewski
