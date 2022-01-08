@@ -1,3 +1,5 @@
+var o2x = require('object-to-xml');
+
 const welcome = (req, res) => {
   res.send('Welcome to api')
 }
@@ -15,4 +17,29 @@ const showBlog = (req, res) => {
   return res.send(blog);
 }
 
-module.exports = { welcome,writeText,addBlog,showBlog }
+const test = (req,res) => {
+  
+  const message = {
+    title: 'This is an object',
+    from: 'Abraham',
+    to: ['Marek', 'Łukasz']
+  }
+  
+  const requestedType = req.headers['accept']
+
+    if(requestedType === 'application/json') {
+      // send json
+      return res.json(message);
+    }
+    if(requestedType === 'application/xml') {
+      // send xml
+      return res.send(o2x({message: message}));
+    }
+    // send error
+    res.status(501).send('not implemented');
+    return res.send('format: undefined');
+          
+}
+
+
+module.exports = { welcome,writeText,addBlog,showBlog,test }
