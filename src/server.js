@@ -1,12 +1,12 @@
 // -- dependencies
-const { json } = require('express')
-const express = require('express')
+import express, { json } from 'express'
+import dotenv from 'dotenv'
 
 // -- local imports
-const api = require('./routes/api')
+import routes from './routes/routes'
 
 // -- config
-require('dotenv').config()
+dotenv.config()
 const HOSTNAME = process.env.HOSTNAME ?? 'localhost'
 const PORT = process.env.PORT ?? 3000
 const app = express()
@@ -15,7 +15,7 @@ const app = express()
 app.use(json())
 
 // -- routes
-app.use('/api', api)
+app.use('/', routes)
 
 // -- start
 app.listen(PORT, HOSTNAME, () => {

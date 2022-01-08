@@ -4,7 +4,7 @@
   "description": "Programowanie we Frameworkach Internetowych",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/server.js"
+    "start": "node --experimental-specifier-resolution=node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/AbrahamKaczmarski/420-IS2-2PFI#readme",
   "dependencies": {
+    "basic-auth": "^2.0.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
-  }
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "type": "module"
 }
