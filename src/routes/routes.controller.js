@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import users from '../db/users'
+import { query } from '../db/db'
 
 const blog = []
 
