@@ -1,6 +1,7 @@
 // -- dependencies
 const { json } = require('express')
 const express = require('express')
+const db = require('./db/db')
 
 // -- local imports
 const api = require('./routes/api')
@@ -21,4 +22,3 @@ app.use('/api', api)
 app.listen(PORT, HOSTNAME, () => {
   console.log(`Listening at http://${HOSTNAME}:${PORT}`)
 })
-

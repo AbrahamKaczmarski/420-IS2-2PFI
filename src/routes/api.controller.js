@@ -1,4 +1,5 @@
 var o2x = require('object-to-xml');
+var {query} = require('../db/db');
 
 const welcome = (req, res) => {
   res.send('Welcome to api')
@@ -26,20 +27,26 @@ const test = (req,res) => {
   }
   
   const requestedType = req.headers['accept']
+  
+  if(requestedType === 'application/json') {
+    // send json
+    return res.json(message);
+  }
+  if(requestedType === 'application/xml') {
+    // send xml
+    return res.send(o2x({message: message}));
+  }
+  // send error
+  res.status(501).send('not implemented');
+  return res.send('format: undefined');
+  
+}
 
-    if(requestedType === 'application/json') {
-      // send json
-      return res.json(message);
-    }
-    if(requestedType === 'application/xml') {
-      // send xml
-      return res.send(o2x({message: message}));
-    }
-    // send error
-    res.status(501).send('not implemented');
-    return res.send('format: undefined');
-          
+const gladiators = (req, res) => {
+  query('SELECT * FROM glad')
+  return res.send();
 }
 
 
-module.exports = { welcome,writeText,addBlog,showBlog,test }
+
+module.exports = { welcome,writeText,addBlog,showBlog,test,gladiators }

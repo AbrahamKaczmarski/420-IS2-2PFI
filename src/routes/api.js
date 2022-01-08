@@ -8,6 +8,7 @@ router.get('/echo/:text', controller.writeText)
 router.post('/blog', controller.addBlog)
 router.get('/blog', controller.showBlog)
 router.get('/test', controller.test)
+router.get('/gladiators', controller.gladiators)
 
 
 
