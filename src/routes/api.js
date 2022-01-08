@@ -8,6 +8,4 @@ router.get('/echo/:text', controller.writeText)
 router.post('/blog', controller.addBlog)
 router.get('/blog', controller.showBlog)
 
-
-
 module.exports = router
