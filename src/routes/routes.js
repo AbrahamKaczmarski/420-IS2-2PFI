@@ -10,7 +10,6 @@ router.post('/token', controller.generateToken)
 
 // # == Public
 
-router.get('/test', controller.test)
 router.get('/gladiators', controller.gladiators)
 router.get('/gladiators/:id', controller.gladiatorById)
 router.get('/fights', controller.fights)

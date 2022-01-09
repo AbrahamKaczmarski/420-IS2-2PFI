@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import users from '../db/users'
 import { query } from '../db/db'
-import { request } from 'express'
+import contentType from '../utils/contentType'
 
 const blog = []
 
@@ -18,14 +18,22 @@ export const generateToken = (req, res) => {
 // # == Public
 
 export const gladiators = (req, res) => {
+  const format = contentType(req,'gladiator','gladiators')
+
+  if(!format) return res.status(406).end()
+
   query('SELECT * FROM glad')
-    .then(list=>res.json(list))
+    .then(list=>res.send(format(list)))
     .catch(err=>res.status(404).end())
 }
 
 export const gladiatorById = (req, res) => {
+  const format = contentType(req,'event','gladiator')
+
+  if(!format) return res.status(406).end()
+
   query(`SELECT * FROM glad INNER JOIN fight AS w ON glad.id = w.winner INNER JOIN fight AS l ON glad.id = l.loser WHERE glad.id = ${req.params.id}`)
-  .then(list=>res.json(list))
+  .then(list=>res.send(format(list)))
   .catch(err=>{
     console.log(err);
     return res.status(404).end()
@@ -33,6 +41,10 @@ export const gladiatorById = (req, res) => {
 }
 
 export const fights = (req, res) => {
+  const format = contentType(req,'fight','fights')
+
+  if(!format) return res.status(406).end()
+
   const {lethal,date_from,date_to} = req.query
   const constrains = []
   lethal && constrains.push(`lethal = ${lethal}`)
@@ -40,33 +52,10 @@ export const fights = (req, res) => {
   date_to && constrains.push(`date < '${date_to}'`)
 
   const where = constrains.length < 1 ? '' : ` WHERE ${constrains.join(' AND ')}`
-  
+
   query(`SELECT * FROM fight${where}`)
-  .then(list=>res.json(list))
+  .then(list=>res.send(format(list)))
   .catch(err=>res.status(404).end())
-}
-
-
-export const test = (req, res) => {
-  const message = {
-    title: 'This is an object',
-    from: 'Abraham',
-    to: ['Marek', 'Łukasz']
-  }
-
-  const requestedType = req.headers['accept']
-
-  if (requestedType === 'application/json') {
-    // send json
-    return res.json(message)
-  }
-  if (requestedType === 'application/xml') {
-    // send xml
-    return res.send(o2x({ message: message }))
-  }
-  // send error
-  res.status(501).send('not implemented')
-  return res.send('format: undefined')
 }
 
 // # == Private
