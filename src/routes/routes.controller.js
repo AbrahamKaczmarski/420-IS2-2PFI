@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import users from '../db/users'
 import { query } from '../db/db'
+import { request } from 'express'
 
 const blog = []
 
@@ -19,9 +20,32 @@ export const generateToken = (req, res) => {
 export const gladiators = (req, res) => {
   query('SELECT * FROM glad')
     .then(list=>res.json(list))
-    .catch(err=>res.status(404).end)
-
+    .catch(err=>res.status(404).end())
 }
+
+export const gladiatorById = (req, res) => {
+  query(`SELECT * FROM glad INNER JOIN fight AS w ON glad.id = w.winner INNER JOIN fight AS l ON glad.id = l.loser WHERE glad.id = ${req.params.id}`)
+  .then(list=>res.json(list))
+  .catch(err=>{
+    console.log(err);
+    return res.status(404).end()
+  })
+}
+
+export const fights = (req, res) => {
+  const {lethal,date_from,date_to} = req.query
+  const constrains = []
+  lethal && constrains.push(`lethal = ${lethal}`)
+  date_from && constrains.push(`date > '${date_from}'`)
+  date_to && constrains.push(`date < '${date_to}'`)
+
+  const where = constrains.length < 1 ? '' : ` WHERE ${constrains.join(' AND ')}`
+  
+  query(`SELECT * FROM fight${where}`)
+  .then(list=>res.json(list))
+  .catch(err=>res.status(404).end())
+}
+
 
 export const test = (req, res) => {
   const message = {

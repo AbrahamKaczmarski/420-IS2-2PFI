@@ -12,6 +12,9 @@ router.post('/token', controller.generateToken)
 
 router.get('/test', controller.test)
 router.get('/gladiators', controller.gladiators)
+router.get('/gladiators/:id', controller.gladiatorById)
+router.get('/fights', controller.fights)
+
 
 // # == Private
 
