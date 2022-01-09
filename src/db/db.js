@@ -8,10 +8,11 @@ const connection = mysql.createConnection({
 })
 
 export const query = q => {
-  connection.connect()
-  connection.query(q, (err, rows, fields) => {
-    if (err) throw err
-    console.log(rows)
+  console.log(q);
+  return new Promise((res,rej)=>{
+    connection.query(q, (err, rows, fields) => {
+      if (err) rej(err)
+      res(rows)
+    })
   })
-  connection.end()
 }

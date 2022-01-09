@@ -18,7 +18,9 @@ export const generateToken = (req, res) => {
 
 export const gladiators = (req, res) => {
   query('SELECT * FROM glad')
-  return res.send()
+    .then(list=>res.json(list))
+    .catch(err=>res.status(404).end)
+
 }
 
 export const test = (req, res) => {
@@ -44,3 +46,61 @@ export const test = (req, res) => {
 }
 
 // # == Private
+
+export const addGladiator = (req,res) => {
+  const {name,province,acquisition} = req.body
+  query(`INSERT INTO glad (name,province,acquisition) VALUES ('${name}','${province}','${acquisition}')`)
+  .then(()=>res.status(200).end())
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).end()
+  })
+}
+export const updateGladiator = (req,res) => {
+  const {name,province,acquisition} = req.body
+  query(`UPDATE glad SET name = '${name}',
+                         province = '${province}',
+                         acquisition = '${acquisition}'
+                     WHERE id = '${req.params.id}' `)
+  .then(()=>res.status(200).end())
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).end()
+  })
+}
+export const deleteGladiator = (req,res) => {
+  //const {name,province,acquisition} = req.body
+  query(`DELETE FROM glad WHERE id = '${req.params.id}' `)
+  .then(()=>res.status(200).end())
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).end()
+  })
+}
+export const addFight = (req,res) => {
+  const {date,winner,loser,lethal} = req.body
+  query(`INSERT INTO fight (date,winner,loser,lethal) VALUES ('${date}','${winner}','${loser}',${lethal})`)
+  .then(()=>res.status(200).end())
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).end()
+  })
+}
+export const updateFight = (req,res) => {
+    const {date,winner,loser,lethal} = req.body
+    query(`UPDATE fight SET date = '${date}', winner = '${winner}', loser = '${loser}', lethal = ${lethal} WHERE id = '${req.params.id}'`)
+    .then(()=>res.status(200).end())
+    .catch((err)=>{
+      console.log(err);
+      res.status(500).end()
+    })
+}
+export const deleteFight = (req,res) => {
+  //const {date,winner,loser,lethal} = req.body
+  query(`DELETE FROM fight WHERE id = '${req.params.id}'`)
+  .then(()=>res.status(200).end())
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).end()
+  })
+}
