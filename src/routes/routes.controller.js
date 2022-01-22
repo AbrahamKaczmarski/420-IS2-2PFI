@@ -48,7 +48,13 @@ export const fightByGladiatorAndId = (req, res) => {
   query(
     `SELECT * FROM glad INNER JOIN fight AS w ON glad.id = w.winner INNER JOIN fight AS l ON glad.id = l.loser WHERE glad.id = ${req.params.gid} LIMIT ${n}, 1`
   )
-    .then(data => res.send(format(data)))
+    .then(([result]) => {
+      if (result) {
+        return res.send(format(result))
+      } else {
+        res.status(404).end()
+      }
+    })
     .catch(() => res.status(404).end())
 }
 
@@ -78,7 +84,7 @@ export const addGladiator = (req, res) => {
   query(
     `INSERT INTO glad (name,province,acquisition) VALUES ('${name}','${province}','${acquisition}')`
   )
-    .then(() => res.status(200).end())
+    .then(() => res.status(201).end())
     .catch(err => {
       console.log(err)
       res.status(500).end()
@@ -110,7 +116,7 @@ export const addFight = (req, res) => {
   query(
     `INSERT INTO fight (date,winner,loser,lethal) VALUES ('${date}','${winner}','${loser}',${lethal})`
   )
-    .then(() => res.status(200).end())
+    .then(() => res.status(201).end())
     .catch(err => {
       console.log(err)
       res.status(500).end()
